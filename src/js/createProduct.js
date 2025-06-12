@@ -2,45 +2,61 @@ import * as THREE from 'three';
 
 export function createProduct(scene) {
   const product = new THREE.Group();
-  product.name = "RoboBuddy";
+  product.name = "SaturnModel";
 
-  product.position.y = -1.0;
+  // Center the product
+  product.position.set(0, 0, 0);
 
-  // Main body (torso)
-  const torso = createPart(
-    'torso',
-    new THREE.BoxGeometry(1.5, 2, 1),
-    { color: 0x4a6fa5, metalness: 0.7, roughness: 0.3 },
-    [0, 1, 0]
+  // Main planet (simple sphere)
+  const planet = createPart(
+    'planet',
+    new THREE.SphereGeometry(1.5, 32, 32),
+    { 
+      color: 0xf4d03f, // Yellowish color
+      metalness: 0.2,
+      roughness: 0.8
+    },
+    [0, 0, 0]
   );
-  product.add(torso);
+  product.add(planet);
 
-  // Head
-  const head = createPart(
-    'head',
-    new THREE.SphereGeometry(0.8, 32, 32),
-    { color: 0xffffff, metalness: 0.8, roughness: 0.2 },
-    [0, 2.8, 0]
+  // // Rings (simple flat ring)
+  // const rings = createPart(
+  //   'rings',
+  //   new THREE.RingGeometry(2, 3, 32),
+  //   {
+  //     color: 0xdddddd, // Light gray
+  //     side: THREE.DoubleSide,
+  //     metalness: 0.3,
+  //     roughness: 0.7
+  //   },
+  //   [0, 0, 0],
+  //   [Math.PI/2, 0, 0] // Rotate to be horizontal
+  // );
+  // product.add(rings);
+
+  // Simple moons (just spheres)
+  const moon1 = createPart(
+    'moon1',
+    new THREE.SphereGeometry(0.3, 16, 16),
+    {
+      color: 0xaaaaaa // Gray
+    },
+    [2.5, 0.5, 0]
   );
-//   const head = createPart(
-//   'head',
-//   new THREE.SphereGeometry(0.8, 32, 32),
-//   {
-//     color: 0xffffff,
-//     metalness: 0.8,
-//     roughness: 0.2,
-//     emissive: new THREE.Color(0xffa500), // warm orange glow like sun
-//     emissiveIntensity: 1.5
-//   },
-//   [0, 2.8, 0]
-// );
+  product.add(moon1);
 
-  product.add(head);
-  
+  const moon2 = createPart(
+    'moon2',
+    new THREE.SphereGeometry(0.2, 16, 16),
+    {
+      color: 0x888888 // Darker gray
+    },
+    [-2, -1, 1]
+  );
+  product.add(moon2);
 
-  // Eyes, Arms, Legs, Antenna (same as before)
-  // ... (refer to previous code for full implementation)
-
+  // Add to scene
   scene.add(product);
   return product;
 }
@@ -66,19 +82,13 @@ function createPart(name, geometry, materialOptions, position, rotation = [0, 0,
 
 function getPartDescription(partName) {
   const descriptions = {
-    torso: "Main processing unit and power core.",
-    head: "Sensor array with 360° vision.",
-    leftEye: "Left optical sensor with night vision.",
-    rightEye: "Right optical sensor with zoom.",
-    leftArm: "Left manipulator arm.",
-    rightArm: "Right manipulator arm.",
-    leftLeg: "Left mobility unit.",
-    rightLeg: "Right mobility unit.",
-    antennaBase: "Communication array base.",
-    antennaBall: "Emergency beacon.",
+    planet: "The main planet body (made of gas!)",
+  
+    moon1: "The largest moon of this planet",
+    moon2: "A smaller moon orbiting the planet"
   };
 
-  return descriptions[partName] || "Modular component.";
+  return descriptions[partName] || "Part of the planet system";
 }
 // createProduct.js
 // import * as THREE from 'three';
